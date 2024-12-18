@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Hachi Maru Pop', sans-serif;
-            background: linear-gradient(135deg, #2196f3, #9c27b0);  /* 青と紫のグラデーション */
+            background: linear-gradient(135deg, #2196f3, #9c27b0);
             color: #333;
             text-align: center;
             margin: 0;
@@ -45,17 +45,25 @@
         }
 
         #omikuji button {
-            padding: 10px 20px;
+            padding: 15px 40px;
             font-size: 16px;
-            background-color: #4caf50;
+            background-color: #e91e63;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
         #omikuji button:hover {
-            background-color: #388e3c;
+            background-color: #c2185b;
+            transform: scale(1.1);
+        }
+
+        #omikuji button:active {
+            background-color: #ad1457;
+            transform: scale(1);
         }
 
         #omikuji-result {
@@ -90,6 +98,28 @@
             color: #f44336;
             font-weight: bold;
         }
+
+        .probability-box {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e0f7fa;
+            color: #00796b;
+            font-size: 12px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        #probability-list {
+            margin-top: 30px;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+            padding: 0 20px;
+        }
+
+        #probability-list li {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -100,20 +130,20 @@
 
     <!-- SNSリンクセクション -->
     <div class="sns-links">
-        <a href="https://twitter.com/onakayowaio" target="_blank" class="sns-twitter"><i class="fab fa-twitter"></i> Twitter</a>
-        <a href="https://mixi.social/@kgm_" target="_blank" class="sns-mixi2"><i class="fab fa-facebook"></i> mixi2</a>
-        <a href="https://misskey.io/@kgm__" target="_blank" class="sns-misskey"><i class="fab fa-github"></i> Misskey</a>
+        <a href="https://twitter.com" target="_blank" class="sns-twitter"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="https://mixi.social" target="_blank" class="sns-mixi2"><i class="fab fa-facebook"></i> mixi2</a>
+        <a href="https://misskey.io" target="_blank" class="sns-misskey"><i class="fab fa-github"></i> Misskey</a>
     </div>
 
-   <main>
+    <main>
         <section id="omikuji">
             <h2>おみくじ</h2>
             <button id="omikuji-button">おみくじを引く</button>
+            <div class="probability-box" id="probability"></div>  <!-- 排出確率表示用 -->
             <p id="omikuji-result"></p>
             <img id="omikuji-icon" src="" alt="">
             <button id="share-button">結果をシェア</button>
             <p id="limit-message"></p>
-            <p id="probability"></p>  <!-- 排出確率表示用 -->
         </section>
 
         <!-- 排出率一覧 -->
@@ -134,24 +164,21 @@
     </footer>
 
     <script>
-        let clickCount = 0;  // おみくじを引いた回数
-        const maxClicks = 3;  // 1日あたりの最大回数
+        let clickCount = 0;
+        const maxClicks = 3;
 
-        // おみくじの結果（重み付けの追加）
         const results = [
-            { result: "大大吉", message: "最高の幸運が待っています！✨", color: "#ffd700", icon: "star.png", weight: 0.001 },  // 0.1%
-            { result: "大吉", message: "今日は最高の日！🌟", color: "#4caf50", icon: "star.png", weight: 0.15 },  // 15%
-            { result: "中吉", message: "良い一日になりそうです！😊", color: "#2196f3", icon: "smile.png", weight: 0.3 },  // 30%
-            { result: "吉", message: "少しの努力が実を結びます！💪", color: "#ffeb3b", icon: "muscle.png", weight: 0.4 },  // 40%
-            { result: "凶", message: "慎重に行動しましょう！⚠️", color: "#f44336", icon: "warning.png", weight: 0.1 }  // 10%
+            { result: "大大吉", message: "最高の幸運が待っています！✨", color: "#ffd700", icon: "star.png", weight: 0.001 },
+            { result: "大吉", message: "今日は最高の日！🌟", color: "#4caf50", icon: "star.png", weight: 0.15 },
+            { result: "中吉", message: "良い一日になりそうです！😊", color: "#2196f3", icon: "smile.png", weight: 0.3 },
+            { result: "吉", message: "少しの努力が実を結びます！💪", color: "#ffeb3b", icon: "muscle.png", weight: 0.4 },
+            { result: "凶", message: "慎重に行動しましょう！⚠️", color: "#f44336", icon: "warning.png", weight: 0.1 }
         ];
 
-        // 結果を確率に基づいて選ぶ
         function getWeightedRandomResult() {
-            let totalWeight = results.reduce((sum, result) => sum + result.weight, 0);  // 重みの合計を計算
-            let random = Math.random() * totalWeight;  // ランダムな数値を生成
+            let totalWeight = results.reduce((sum, result) => sum + result.weight, 0);
+            let random = Math.random() * totalWeight;
 
-            // ランダムな数値に基づいて結果を選ぶ
             for (let i = 0; i < results.length; i++) {
                 random -= results[i].weight;
                 if (random <= 0) {
@@ -160,7 +187,6 @@
             }
         }
 
-        // おみくじボタンがクリックされたときの処理
         document.getElementById("omikuji-button").addEventListener("click", function() {
             if (clickCount < maxClicks) {
                 const randomResult = getWeightedRandomResult();
@@ -168,23 +194,20 @@
                 document.getElementById("omikuji-result").style.color = randomResult.color;
                 document.getElementById("omikuji-icon").src = randomResult.icon;
                 document.getElementById("omikuji-icon").style.display = "block";
-                
-                // 排出確率（重み）の表示をボタンの下に
+
                 document.getElementById("probability").textContent = `排出確率: ${Math.round(randomResult.weight * 1000) / 10}%`;
 
-                clickCount++;  // 回数をカウント
+                clickCount++;
                 if (clickCount === maxClicks) {
                     document.getElementById("limit-message").textContent = "回数制限に達しました。明日またおみくじを引いてください！";
                 }
             }
         });
 
-        // シェアボタン
         document.getElementById("share-button").addEventListener("click", function() {
             const resultMessage = document.getElementById("omikuji-result").textContent;
             const shareText = `あなたのおみくじ結果は「${resultMessage}」！試してみてね！`;
 
-            // TwitterのシェアURLを生成
             const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
             window.open(twitterUrl, "_blank");
         });
