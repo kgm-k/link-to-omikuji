@@ -102,11 +102,15 @@
         .probability-box {
             margin-top: 20px;
             padding: 10px;
-            background-color: #e0f7fa;
+            background-color: #ffffff;
             color: #00796b;
             font-size: 12px;
             border-radius: 5px;
             display: inline-block;
+            border: 1px solid #ddd;
+            width: auto;
+            max-width: 80%;
+            text-align: left;
         }
 
         #probability-list {
@@ -139,23 +143,20 @@
         <section id="omikuji">
             <h2>おみくじ</h2>
             <button id="omikuji-button">おみくじを引く</button>
-            <div class="probability-box" id="probability"></div>  <!-- 排出確率表示用 -->
+            <div class="probability-box">
+                <h3>おみくじの排出確率</h3>
+                <ul id="probability-list">
+                    <li>大大吉 - 0.1%</li>
+                    <li>大吉 - 15%</li>
+                    <li>中吉 - 30%</li>
+                    <li>吉 - 40%</li>
+                    <li>凶 - 10%</li>
+                </ul>
+            </div>
             <p id="omikuji-result"></p>
             <img id="omikuji-icon" src="" alt="">
             <button id="share-button">結果をシェア</button>
             <p id="limit-message"></p>
-        </section>
-
-        <!-- 排出率一覧 -->
-        <section id="probability-list">
-            <h3>おみくじの排出確率</h3>
-            <ul>
-                <li>大大吉 - 0.1%</li>
-                <li>大吉 - 15%</li>
-                <li>中吉 - 30%</li>
-                <li>吉 - 40%</li>
-                <li>凶 - 10%</li>
-            </ul>
         </section>
     </main>
 
@@ -194,8 +195,6 @@
                 document.getElementById("omikuji-result").style.color = randomResult.color;
                 document.getElementById("omikuji-icon").src = randomResult.icon;
                 document.getElementById("omikuji-icon").style.display = "block";
-
-                document.getElementById("probability").textContent = `排出確率: ${Math.round(randomResult.weight * 1000) / 10}%`;
 
                 clickCount++;
                 if (clickCount === maxClicks) {
