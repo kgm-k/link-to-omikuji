@@ -1,0 +1,38 @@
+#omikuji button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4); /* ピンク系グラデーション */
+    border: none;
+    border-radius: 50px; /* 丸み */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ボタンの影 */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* アニメーション */
+}
+
+#omikuji button:hover {
+    background: linear-gradient(135deg, #fad0c4, #ff9a9e); /* ホバー時に反転 */
+    transform: scale(1.05); /* 少し大きくなる */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 影を強調 */
+}
+
+#share-button {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #a18cd1, #fbc2eb); /* 紫系グラデーション */
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+#share-button:hover {
+    background: linear-gradient(135deg, #fbc2eb, #a18cd1); /* ホバー時に反転 */
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
