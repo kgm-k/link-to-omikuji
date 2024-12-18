@@ -105,7 +105,7 @@
         <a href="https://misskey.io/@kgm__" target="_blank" class="sns-misskey"><i class="fab fa-github"></i> Misskey</a>
     </div>
 
-    <main>
+   <main>
         <section id="omikuji">
             <h2>おみくじ</h2>
             <button id="omikuji-button">おみくじを引く</button>
@@ -113,6 +113,19 @@
             <img id="omikuji-icon" src="" alt="">
             <button id="share-button">結果をシェア</button>
             <p id="limit-message"></p>
+            <p id="probability"></p>  <!-- 排出確率表示用 -->
+        </section>
+
+        <!-- 排出率一覧 -->
+        <section id="probability-list">
+            <h3>おみくじの排出確率</h3>
+            <ul>
+                <li>大大吉 - 0.1%</li>
+                <li>大吉 - 15%</li>
+                <li>中吉 - 30%</li>
+                <li>吉 - 40%</li>
+                <li>凶 - 10%</li>
+            </ul>
         </section>
     </main>
 
@@ -151,10 +164,13 @@
         document.getElementById("omikuji-button").addEventListener("click", function() {
             if (clickCount < maxClicks) {
                 const randomResult = getWeightedRandomResult();
-                document.getElementById("omikuji-result").textContent = `結果: ${randomResult.result} - ${randomResult.message}`;
+                document.getElementById("omikuji-result").textContent = `${randomResult.result} - ${randomResult.message}`;
                 document.getElementById("omikuji-result").style.color = randomResult.color;
                 document.getElementById("omikuji-icon").src = randomResult.icon;
                 document.getElementById("omikuji-icon").style.display = "block";
+                
+                // 排出確率（重み）の表示をボタンの下に
+                document.getElementById("probability").textContent = `排出確率: ${Math.round(randomResult.weight * 1000) / 10}%`;
 
                 clickCount++;  // 回数をカウント
                 if (clickCount === maxClicks) {
