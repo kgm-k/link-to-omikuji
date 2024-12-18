@@ -124,19 +124,33 @@
         let clickCount = 0;  // おみくじを引いた回数
         const maxClicks = 3;  // 1日あたりの最大回数
 
-        // おみくじの結果
+        // おみくじの結果（重み付けの追加）
         const results = [
-            { result: "大大吉", message: "最高の幸運が待っています！✨", color: "#ffd700", icon: "star.png" },
-            { result: "大吉", message: "今日は最高の日！🌟", color: "#4caf50", icon: "star.png" },
-            { result: "中吉", message: "良い一日になりそうです！😊", color: "#2196f3", icon: "smile.png" },
-            { result: "吉", message: "少しの努力が実を結びます！💪", color: "#ffeb3b", icon: "muscle.png" },
-            { result: "凶", message: "慎重に行動しましょう！⚠️", color: "#f44336", icon: "warning.png" }
+            { result: "大大吉", message: "最高の幸運が待っています！✨", color: "#ffd700", icon: "star.png", weight: 0.001 },  // 0.1%
+            { result: "大吉", message: "今日は最高の日！🌟", color: "#4caf50", icon: "star.png", weight: 0.15 },  // 15%
+            { result: "中吉", message: "良い一日になりそうです！😊", color: "#2196f3", icon: "smile.png", weight: 0.3 },  // 30%
+            { result: "吉", message: "少しの努力が実を結びます！💪", color: "#ffeb3b", icon: "muscle.png", weight: 0.4 },  // 40%
+            { result: "凶", message: "慎重に行動しましょう！⚠️", color: "#f44336", icon: "warning.png", weight: 0.1 }  // 10%
         ];
+
+        // 結果を確率に基づいて選ぶ
+        function getWeightedRandomResult() {
+            let totalWeight = results.reduce((sum, result) => sum + result.weight, 0);  // 重みの合計を計算
+            let random = Math.random() * totalWeight;  // ランダムな数値を生成
+
+            // ランダムな数値に基づいて結果を選ぶ
+            for (let i = 0; i < results.length; i++) {
+                random -= results[i].weight;
+                if (random <= 0) {
+                    return results[i];
+                }
+            }
+        }
 
         // おみくじボタンがクリックされたときの処理
         document.getElementById("omikuji-button").addEventListener("click", function() {
             if (clickCount < maxClicks) {
-                const randomResult = results[Math.floor(Math.random() * results.length)];
+                const randomResult = getWeightedRandomResult();
                 document.getElementById("omikuji-result").textContent = `結果: ${randomResult.result} - ${randomResult.message}`;
                 document.getElementById("omikuji-result").style.color = randomResult.color;
                 document.getElementById("omikuji-icon").src = randomResult.icon;
@@ -152,7 +166,10 @@
         // シェアボタン
         document.getElementById("share-button").addEventListener("click", function() {
             const resultMessage = document.getElementById("omikuji-result").textContent;
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(resultMessage)}`;
+            const shareText = `あなたのおみくじ結果は「${resultMessage}」！試してみてね！`;
+
+            // TwitterのシェアURLを生成
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
             window.open(twitterUrl, "_blank");
         });
     </script>
