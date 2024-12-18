@@ -25,6 +25,21 @@
             margin: 0;
         }
 
+        .sns-links {
+            margin-top: 30px;
+        }
+
+        .sns-links a {
+            font-size: 24px;
+            margin: 0 15px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .sns-links a:hover {
+            color: #0288d1;
+        }
+
         #omikuji {
             margin-top: 50px;
         }
@@ -58,15 +73,15 @@
         }
 
         #omikuji-icon {
-            width: 80px;
+            width: 100px;
             margin-top: 10px;
             display: none;
         }
 
         #share-button {
             margin-top: 20px;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 10px 20px;
+            font-size: 16px;
             background-color: #1da1f2;
             color: white;
             border: none;
@@ -82,11 +97,10 @@
             margin-top: 20px;
             color: #f44336;
             font-weight: bold;
-            font-size: 14px;
         }
 
         .probability-box {
-            margin-top: 15px;
+            margin-top: 20px;
             padding: 10px;
             background-color: #ffffff;
             color: #00796b;
@@ -94,18 +108,17 @@
             border-radius: 5px;
             display: inline-block;
             border: 1px solid #ddd;
-            width: auto;
-            max-width: 80%;
+            width: 60%;
+            max-width: 300px;
             text-align: left;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         #probability-list {
-            margin: 0;
-            padding: 0 10px;
-            text-align: left;
-            font-size: 10px;
+            margin-top: 5px;
+            font-size: 12px;
             color: #333;
+            padding: 0 10px;
         }
 
         #probability-list li {
@@ -119,6 +132,13 @@
         <p>SNSリンクとおみくじを楽しもう！</p>
     </header>
 
+    <!-- SNSリンクセクション -->
+    <div class="sns-links">
+        <a href="https://twitter.com" target="_blank" class="sns-twitter"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="https://mixi.social" target="_blank" class="sns-mixi2"><i class="fab fa-facebook"></i> mixi2</a>
+        <a href="https://misskey.io" target="_blank" class="sns-misskey"><i class="fab fa-github"></i> Misskey</a>
+    </div>
+
     <main>
         <section id="omikuji">
             <h2>おみくじ</h2>
@@ -127,11 +147,10 @@
             <p id="omikuji-result"></p>
             <img id="omikuji-icon" src="" alt="">
             <button id="share-button">結果をシェア</button>
-            <p id="limit-message"></p>
 
-            <!-- 排出確率一覧（シェアボタンの下に配置） -->
+            <!-- 排出確率一覧（白い箱内に表示） -->
             <div class="probability-box">
-                <h3 style="font-size: 12px; margin: 0;">おみくじの排出確率</h3>
+                <h3>おみくじの排出確率</h3>
                 <ul id="probability-list">
                     <li>大大吉 - 0.1%</li>
                     <li>大吉 - 15%</li>
@@ -140,11 +159,13 @@
                     <li>凶 - 10%</li>
                 </ul>
             </div>
+
+            <p id="limit-message"></p>
         </section>
     </main>
 
     <footer>
-        <p style="font-size: 12px; margin-top: 20px;">© 2024 SNSまとめ＆おみくじサイト</p>
+        <p>© 2024 SNSまとめ＆おみくじサイト</p>
     </footer>
 
     <script>
