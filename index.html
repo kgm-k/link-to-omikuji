@@ -5,37 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SNSまとめ＆おみくじサイト</title>
 <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+
 <style>
-body {
-  font-family: 'Hachi Maru Pop', sans-serif;
-  background: #7894C1;
+body{
+  font-family:'Hachi Maru Pop',sans-serif;
+  background:#7894C1;
   margin:0;
   text-align:center;
   color:#333;
 }
 
-header{
-  padding:20px;
-}
+header{padding:20px;}
 
-.welcome {
-  font-size: 2rem;
-  background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: float 2s ease-in-out infinite alternate;
+.welcome{
+  font-size:2rem;
+  background:linear-gradient(45deg,#ff9a9e,#fad0c4);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:float 2s ease-in-out infinite alternate;
   margin:0;
 }
 
-.subtitle {
+.subtitle{
   font-size:1rem;
   color:#fff;
   margin-top:6px;
 }
 
-@keyframes float {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-6px); }
+@keyframes float{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-6px)}
 }
 
 .sns-links a{
@@ -48,7 +47,7 @@ header{
   border-radius:30px;
   text-decoration:none;
   color:#333;
-  box-shadow:0 4px 6px rgba(0,0,0,0.15);
+  box-shadow:0 4px 6px rgba(0,0,0,.15);
 }
 
 .card{
@@ -56,9 +55,9 @@ header{
   padding:15px;
   width:90%;
   max-width:500px;
-  background: rgba(173, 216, 230, 0.5);
+  background:rgba(173,216,230,.5);
   border-radius:18px;
-  box-shadow:0 6px 12px rgba(0,0,0,0.15);
+  box-shadow:0 6px 12px rgba(0,0,0,.15);
 }
 
 .main-button{
@@ -71,6 +70,7 @@ header{
   font-size:16px;
   cursor:pointer;
   transition:.2s;
+  white-space:nowrap;
 }
 
 .main-button:hover{
@@ -78,9 +78,7 @@ header{
   transform:scale(1.05);
 }
 
-.main-button:active{
-  transform:scale(.95);
-}
+.main-button:active{transform:scale(.95)}
 
 #omikuji-result{
   margin-top:10px;
@@ -102,7 +100,7 @@ summary{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:rgba(255,255,255,0.2);
+  background:rgba(255,255,255,.2);
   border-radius:16px;
 }
 
@@ -111,28 +109,28 @@ summary::after{
   font-size:20px;
 }
 
-details[open] summary::after{
-  content:"－";
-}
+details[open] summary::after{content:"－"}
 
-/* 招待コード */
+.invite-list,#comment-list{padding-top:10px}
+
+/* 招待コードボックス */
 .invite-box{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  background: rgba(220, 240, 255, 0.8);
+  background:rgba(220,240,255,.8);
   border-radius:12px;
   padding:10px 12px;
   margin:6px 0;
-  box-shadow:0 3px 6px rgba(0,0,0,0.1);
+  box-shadow:0 3px 6px rgba(0,0,0,.1);
+  text-align:left;
 }
 
 .invite-info{
   display:flex;
   flex-direction:column;
   gap:4px;
-  text-align:left;
 }
 
 .service-name{
@@ -146,18 +144,13 @@ details[open] summary::after{
   word-break:break-all;
 }
 
-.invite-box .main-button{
-  white-space:nowrap;
-  flex-shrink:0;
-}
-
-/* コピー成功表示 */
 .copy-message{
   font-size:12px;
   color:#4caf50;
+  height:1em;
   opacity:0;
   transform:translateY(-4px);
-  transition:opacity .2s, transform .2s;
+  transition:.2s;
 }
 
 .copy-message.show{
@@ -172,8 +165,7 @@ details[open] summary::after{
   gap:12px;
 }
 
-.comment-input,
-.comment-textarea{
+.comment-input,.comment-textarea{
   font-family:'Hachi Maru Pop',sans-serif;
   padding:10px;
   border-radius:15px;
@@ -182,11 +174,11 @@ details[open] summary::after{
 }
 
 .comment-item{
-  background: rgba(220, 240, 255, 0.8);
+  background:rgba(220,240,255,.8);
   border-radius:12px;
   padding:10px 12px;
   margin:6px 0;
-  box-shadow:0 3px 6px rgba(0,0,0,0.1);
+  box-shadow:0 3px 6px rgba(0,0,0,.1);
   text-align:left;
 }
 
@@ -194,24 +186,16 @@ details[open] summary::after{
   font-size:14px;
   color:#9c27b0;
   font-weight:600;
+  margin-bottom:4px;
 }
 
 .comment-text{
   font-size:14px;
 }
-
-/* 小画面対応 */
-@media (max-width: 400px){
-  .invite-box{
-    flex-direction:column;
-    align-items:stretch;
-  }
-}
 </style>
 </head>
 
 <body>
-
 <header>
   <h1 class="welcome">こんにちは♪</h1>
   <p class="subtitle">SNSリンクとおみくじを楽しもう！</p>
@@ -230,44 +214,63 @@ details[open] summary::after{
 
 <details class="card">
   <summary>ポイ活 招待コード</summary>
+  <div class="invite-list">
 
-  <div class="invite-box">
-    <div class="invite-info">
-      <div class="service-name">トリマ</div>
-      <div class="invite-code">TRIMA123</div>
-      <div class="copy-message"></div>
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">トリマ</div>
+        <div class="invite-code">TRIMA123</div>
+        <div class="copy-message"></div>
+      </div>
+      <button class="main-button" onclick="copyText(this)">コピー</button>
     </div>
-    <button class="main-button" onclick="copyText(this)">コピー</button>
-  </div>
 
-  <div class="invite-box">
-    <div class="invite-info">
-      <div class="service-name">レシチャレ</div>
-      <div class="invite-code">RESI456</div>
-      <div class="copy-message"></div>
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">レシチャレ</div>
+        <div class="invite-code">RESI456</div>
+        <div class="copy-message"></div>
+      </div>
+      <button class="main-button" onclick="copyText(this)">コピー</button>
     </div>
-    <button class="main-button" onclick="copyText(this)">コピー</button>
-  </div>
 
-  <div class="invite-box">
-    <div class="invite-info">
-      <div class="service-name">マクロミル</div>
-      <div class="invite-code">MACRO789</div>
-      <div class="copy-message"></div>
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">マクロミル</div>
+        <div class="invite-code">MACRO789</div>
+        <div class="copy-message"></div>
+      </div>
+      <button class="main-button" onclick="copyText(this)">コピー</button>
     </div>
-    <button class="main-button" onclick="copyText(this)">コピー</button>
-  </div>
 
-  <div class="invite-box">
-    <div class="invite-info">
-      <div class="service-name">dジョブ</div>
-      <div class="invite-code">https://djob.docomo.ne.jp/invite/XXXXXX</div>
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">dジョブ</div>
+        <div class="invite-code">https://djob.docomo.ne.jp/invite/XXXXXX</div>
+      </div>
+      <a href="https://djob.docomo.ne.jp/invite/XXXXXX" target="_blank" class="main-button" style="text-decoration:none;">開く</a>
     </div>
-    <a href="https://djob.docomo.ne.jp/invite/XXXXXX"
-       target="_blank"
-       class="main-button"
-       style="text-decoration:none;">開く</a>
+
   </div>
+</details>
+
+<details class="card">
+  <summary>みんなのコメント</summary>
+
+  <form class="comment-form"
+    action="https://docs.google.com/forms/d/e/1FAIpQLSeqN2Bcu62Iec3QcdqpV9ooE0TOhKHcXrsB_H4UoyUtQvDcsQ/formResponse"
+    method="POST"
+    target="hidden_iframe"
+    onsubmit="submitted=true;">
+    <input type="text" name="entry.243187617" placeholder="名前（任意）" class="comment-input">
+    <textarea name="entry.4743221" placeholder="コメント" required class="comment-textarea"></textarea>
+    <button type="submit" class="main-button">送信</button>
+  </form>
+
+  <iframe name="hidden_iframe" style="display:none"
+    onload="if(submitted){alert('送信しました！')}"></iframe>
+
+  <div id="comment-list"></div>
 </details>
 
 <footer>
@@ -275,42 +278,59 @@ details[open] summary::after{
 </footer>
 
 <script>
-const results = [
-  { t:"大大吉", m:"あなたは神です！", c:"#ffd700", w:0.001 },
-  { t:"大吉", m:"最高の運勢！", c:"#4caf50", w:0.15 },
-  { t:"中吉", m:"いい一日になりそう", c:"#2196f3", w:0.3 },
-  { t:"吉", m:"がんばれば実る", c:"#ffeb3b", w:0.4 },
-  { t:"凶", m:"慎重に行こう", c:"#f44336", w:0.1 }
+let submitted=false;
+
+const results=[
+  {t:"大大吉",m:"あなたは神です！",c:"#ffd700",w:0.001},
+  {t:"大吉",m:"最高の運勢！",c:"#4caf50",w:0.15},
+  {t:"中吉",m:"いい一日になりそう",c:"#2196f3",w:0.3},
+  {t:"吉",m:"がんばれば実る",c:"#ffeb3b",w:0.4},
+  {t:"凶",m:"慎重に行こう",c:"#f44336",w:0.1}
 ];
 
-document.getElementById("omikuji-button").onclick = () => {
-  let r = Math.random(), s = 0;
-  for (let o of results) {
-    s += o.w;
-    if (r <= s) {
-      const el = document.getElementById("omikuji-result");
-      el.textContent = o.t + " - " + o.m;
-      el.style.color = o.c;
+document.getElementById("omikuji-button").onclick=()=>{
+  let r=Math.random(),s=0;
+  for(let o of results){
+    s+=o.w;
+    if(r<=s){
+      const el=document.getElementById("omikuji-result");
+      el.textContent=o.t+" - "+o.m;
+      el.style.color=o.c;
       break;
     }
   }
 };
 
-function copyText(btn) {
-  const box = btn.parentElement;
-  const text = box.querySelector(".invite-code").textContent;
-  const msg = box.querySelector(".copy-message");
+function copyText(btn){
+  const box=btn.parentElement;
+  const text=box.querySelector(".invite-code").textContent;
+  const msg=box.querySelector(".copy-message");
 
-  navigator.clipboard.writeText(text).then(() => {
-    msg.textContent = "コピーしました！";
+  navigator.clipboard.writeText(text).then(()=>{
+    msg.textContent="コピーしました！";
     msg.classList.add("show");
-    setTimeout(() => {
+    setTimeout(()=>{
       msg.classList.remove("show");
-      msg.textContent = "";
-    }, 2000);
+      msg.textContent="";
+    },2000);
   });
 }
-</script>
 
+fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrhwGdD7iEQv4/gviz/tq?tqx=out:csv")
+.then(r=>r.text())
+.then(t=>{
+  t.trim().split("\n").slice(1).reverse().forEach(row=>{
+    const c=row.split(",");
+    const name=(c[1]||"").replace(/"/g,"").trim()||"匿名";
+    const text=(c[2]||"").replace(/"/g,"").trim();
+    if(!text)return;
+    document.getElementById("comment-list").innerHTML+=
+      `<div class="comment-item">
+        <div class="comment-name">${name}</div>
+        <div class="comment-text">${text}</div>
+      </div>`;
+  });
+});
+</script>
 </body>
 </html>
