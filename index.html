@@ -279,14 +279,13 @@ details[open] summary::after{content:"－"}
 </footer>
 
 <script>
-let submitted = false;
-
+/* ===== おみくじ ===== */
 const results = [
   { t:"大大吉", m:"あなたは神です！", c:"#ffd700", w:0.001 },
-  { t:"大吉", m:"最高の運勢！", c:"#4caf50", w:0.15 },
-  { t:"中吉", m:"いい一日になりそう", c:"#2196f3", w:0.3 },
-  { t:"吉", m:"がんばれば実る", c:"#ffeb3b", w:0.4 },
-  { t:"凶", m:"慎重に行こう", c:"#f44336", w:0.1 }
+  { t:"大吉",   m:"最高の運勢！",     c:"#4caf50", w:0.15 },
+  { t:"中吉",   m:"いい一日になりそう", c:"#2196f3", w:0.3 },
+  { t:"吉",     m:"がんばれば実る",   c:"#ffeb3b", w:0.4 },
+  { t:"凶",     m:"慎重に行こう",     c:"#f44336", w:0.1 }
 ];
 
 document.getElementById("omikuji-button").onclick = () => {
@@ -302,62 +301,58 @@ document.getElementById("omikuji-button").onclick = () => {
   }
 };
 
+/* ===== 招待コードコピー ===== */
 function copyText(btn) {
   const box = btn.parentElement;
   const text = box.querySelector(".invite-code").textContent;
   const msg = box.querySelector(".copy-message");
   navigator.clipboard.writeText(text).then(() => {
     msg.textContent = "コピーしました！";
-    setTimeout(()=>msg.textContent="",2000);
+    setTimeout(() => msg.textContent = "", 2000);
   });
 }
 
-fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrhwGdD7iEQv4/gviz/tq?tqx=out:csv")
-.then(r=>r.text())
-.then(t=>{
-  t.trim().split("\n").slice(1).reverse().forEach(row=>{
-    const c=row.split(",");
-    const LIMIT_HOURS = 24; // ← ここを変えれば時間調整できる
+/* ===== コメント欄（24時間で消える／一部は残す） ===== */
+const LIMIT_HOURS = 24;
 
 fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrhwGdD7iEQv4/gviz/tq?tqx=out:csv")
-.then(r=>r.text())
-.then(t=>{
+.then(r => r.text())
+.then(t => {
   const now = Date.now();
   const limit = LIMIT_HOURS * 60 * 60 * 1000;
 
-  t.trim().split("\n").slice(1).reverse().forEach(row=>{
+  t.trim().split("\n").slice(1).reverse().forEach(row => {
     const c = row.split(",");
 
-    // A列：タイムスタンプ
-    const timeStr = (c[0]||"").replace(/"/g,"").trim();
+    // A列：投稿時間
+    const timeStr = (c[0] || "").replace(/"/g,"").trim();
     const postTime = new Date(timeStr).getTime();
 
-    // 24時間以上前なら表示しない
-    if(now - postTime > limit) return;
-
     // B列：名前 / C列：コメント
-    const name = (c[1]||"").replace(/"/g,"").trim() || "匿名";
-    const text = (c[2]||"").replace(/"/g,"").trim();
-    if(!text) return;
+    const name = (c[1] || "").replace(/"/g,"").trim() || "匿名";
+    const text = (c[2] || "").replace(/"/g,"").trim();
+    if (!text) return;
 
-    document.getElementById("comment-list").innerHTML +=
-      `<div class="comment-item">
+    // ★ 残す条件
+    const keep =
+      text.includes("大吉") ||   // コメントに大吉
+      name.includes("大吉") ||   // 名前に大吉
+      name === "♪";              // 管理人
+
+    // 24時間超え＆特別条件なし → 非表示
+    if (now - postTime > limit && !keep) return;
+
+    document.getElementById("comment-list").innerHTML += `
+      <div class="comment-item">
         <div class="comment-name">${name}</div>
         <div class="comment-text">${text}</div>
       </div>`;
   });
 });
-    if(!text) return;
-    document.getElementById("comment-list").innerHTML +=
-      `<div class="comment-item">
-        <div class="comment-name">${name}</div>
-        <div class="comment-text">${text}</div>
-      </div>`;
-  });
-});
 
+/* ===== Twitter パスワード ===== */
 function openTwitter(){
-  const PASSWORD = "1234"; // ← 好きなパスワードに変更
+  const PASSWORD = (1000 + 100 + 10 + 5).toString(); // 1115
   const input = prompt("パスワードを入力してください");
 
   if(input === PASSWORD){
@@ -367,6 +362,4 @@ function openTwitter(){
   }
 }
 </script>
-
-</body>
 </html>
