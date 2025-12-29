@@ -202,7 +202,7 @@ details[open] summary::after{content:"－"}
 </header>
 
 <div class="sns-links">
-  <a href="https://twitter.com/onakayowaio" target="_blank">Twitter</a>
+  <a href="#" onclick="openTwitter()" class="sns-btn twitter">Twitter</a>
   <a href="https://misskey.flowers/@kgm" target="_blank">Misskey</a>
 </div>
 
@@ -331,6 +331,17 @@ fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrh
       </div>`;
   });
 });
+
+function openTwitter(){
+  const PASSWORD = "0627"; // ← 好きなパスワードに変更
+  const input = prompt("パスワードを入力してください");
+
+  if(input === PASSWORD){
+    window.open("https://twitter.com/oo", "_blank");
+  }else if(input !== null){
+    alert("パスワードが違います");
+  }
+}
 </script>
 </body>
 </html>
