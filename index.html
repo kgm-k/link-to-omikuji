@@ -321,8 +321,42 @@ fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrh
 .then(t=>{
   t.trim().split("\n").slice(1).reverse().forEach(row=>{
     const c=row.split(",");
-    const name=(c[1]||"").replace(/"/g,"").trim()||"匿名";
-    const text=(c[2]||"").replace(/"/g,"").trim();
+   const LIMIT_HOURS = 24;
+const ADMIN_NAME = "♪";
+const KEEP_WORD = "大吉";
+
+fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrhwGdD7iEQv4/gviz/tq?tqx=out:csv")
+.then(r=>r.text())
+.then(t=>{
+  const now = Date.now();
+  const limit = LIMIT_HOURS * 60 * 60 * 1000;
+
+  t.trim().split("\n").slice(1).reverse().forEach(row=>{
+    const c = row.split(",");
+
+    // A列：タイムスタンプ
+    const timeStr = (c[0]||"").replace(/"/g,"").trim();
+    const postTime = new Date(timeStr).getTime();
+
+    // B列：名前 / C列：コメント
+    const name = (c[1]||"").replace(/"/g,"").trim() || "匿名";
+    const text = (c[2]||"").replace(/"/g,"").trim();
+    if(!text) return;
+
+    // 👇 残す条件
+    const isAdmin = name === ADMIN_NAME;
+    const hasDaikichi = text.includes(KEEP_WORD);
+
+    // 管理人でも大吉でもなく、24時間超えてたら表示しない
+    if(!isAdmin && !hasDaikichi && now - postTime > limit) return;
+
+    document.getElementById("comment-list").innerHTML +=
+      `<div class="comment-item ${isAdmin ? "admin-comment" : ""}">
+        <div class="comment-name">${name}</div>
+        <div class="comment-text">${text}</div>
+      </div>`;
+  });
+});
     if(!text)return;
     document.getElementById("comment-list").innerHTML+=
       `<div class="comment-item">
