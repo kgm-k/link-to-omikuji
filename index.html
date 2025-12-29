@@ -279,41 +279,36 @@ details[open] summary::after{content:"－"}
 </footer>
 
 <script>
-let submitted=false;
+let submitted = false;
 
-const results=[
-  {t:"大大吉",m:"あなたは神です！",c:"#ffd700",w:0.001},
-  {t:"大吉",m:"最高の運勢！",c:"#4caf50",w:0.15},
-  {t:"中吉",m:"いい一日になりそう",c:"#2196f3",w:0.3},
-  {t:"吉",m:"がんばれば実る",c:"#ffeb3b",w:0.4},
-  {t:"凶",m:"慎重に行こう",c:"#f44336",w:0.1}
+const results = [
+  { t:"大大吉", m:"あなたは神です！", c:"#ffd700", w:0.001 },
+  { t:"大吉", m:"最高の運勢！", c:"#4caf50", w:0.15 },
+  { t:"中吉", m:"いい一日になりそう", c:"#2196f3", w:0.3 },
+  { t:"吉", m:"がんばれば実る", c:"#ffeb3b", w:0.4 },
+  { t:"凶", m:"慎重に行こう", c:"#f44336", w:0.1 }
 ];
 
-document.getElementById("omikuji-button").onclick=()=>{
-  let r=Math.random(),s=0;
-  for(let o of results){
-    s+=o.w;
-    if(r<=s){
-      const el=document.getElementById("omikuji-result");
-      el.textContent=o.t+" - "+o.m;
-      el.style.color=o.c;
+document.getElementById("omikuji-button").onclick = () => {
+  let r = Math.random(), s = 0;
+  for (let o of results) {
+    s += o.w;
+    if (r <= s) {
+      const el = document.getElementById("omikuji-result");
+      el.textContent = o.t + " - " + o.m;
+      el.style.color = o.c;
       break;
     }
   }
 };
 
-function copyText(btn){
-  const box=btn.parentElement;
-  const text=box.querySelector(".invite-code").textContent;
-  const msg=box.querySelector(".copy-message");
-
-  navigator.clipboard.writeText(text).then(()=>{
-    msg.textContent="コピーしました！";
-    msg.classList.add("show");
-    setTimeout(()=>{
-      msg.classList.remove("show");
-      msg.textContent="";
-    },2000);
+function copyText(btn) {
+  const box = btn.parentElement;
+  const text = box.querySelector(".invite-code").textContent;
+  const msg = box.querySelector(".copy-message");
+  navigator.clipboard.writeText(text).then(() => {
+    msg.textContent = "コピーしました！";
+    setTimeout(()=>msg.textContent="",2000);
   });
 }
 
@@ -322,9 +317,7 @@ fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrh
 .then(t=>{
   t.trim().split("\n").slice(1).reverse().forEach(row=>{
     const c=row.split(",");
-const LIMIT_HOURS = 24;
-const ADMIN_NAME = "♪";
-const KEEP_WORD = "大吉";
+    const LIMIT_HOURS = 24; // ← ここを変えれば時間調整できる
 
 fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrhwGdD7iEQv4/gviz/tq?tqx=out:csv")
 .then(r=>r.text())
@@ -339,20 +332,24 @@ fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrh
     const timeStr = (c[0]||"").replace(/"/g,"").trim();
     const postTime = new Date(timeStr).getTime();
 
+    // 24時間以上前なら表示しない
+    if(now - postTime > limit) return;
+
     // B列：名前 / C列：コメント
     const name = (c[1]||"").replace(/"/g,"").trim() || "匿名";
     const text = (c[2]||"").replace(/"/g,"").trim();
     if(!text) return;
 
-    // 👇 残す条件
-    const isAdmin = name === ADMIN_NAME;
-    const hasDaikichi = text.includes(KEEP_WORD);
-
-    // 管理人でも大吉でもなく、24時間超えてたら表示しない
-    if(!isAdmin && !hasDaikichi && now - postTime > limit) return;
-
     document.getElementById("comment-list").innerHTML +=
-      `<div class="comment-item ${isAdmin ? "admin-comment" : ""}">
+      `<div class="comment-item">
+        <div class="comment-name">${name}</div>
+        <div class="comment-text">${text}</div>
+      </div>`;
+  });
+});
+    if(!text) return;
+    document.getElementById("comment-list").innerHTML +=
+      `<div class="comment-item">
         <div class="comment-name">${name}</div>
         <div class="comment-text">${text}</div>
       </div>`;
@@ -360,15 +357,16 @@ fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrh
 });
 
 function openTwitter(){
-  const PASSWORD = "1115"; // ← 好きなパスワードに変更
+  const PASSWORD = "1234"; // ← 好きなパスワードに変更
   const input = prompt("パスワードを入力してください");
 
   if(input === PASSWORD){
-    window.open("https://twitter.com/onakayowaio", "_blank");
+    window.open("https://twitter.com/oo", "_blank");
   }else if(input !== null){
     alert("パスワードが違います");
   }
 }
 </script>
+
 </body>
 </html>
