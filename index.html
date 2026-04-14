@@ -1,1 +1,373 @@
-<button disabled>工事中です</button>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNSまとめ＆おみくじサイト</title>
+<link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:'Hachi Maru Pop',sans-serif;
+  background:#7894C1;
+  margin:0;
+  text-align:center;
+  color:#333;
+}
+
+header{padding:20px;}
+
+.welcome{
+  font-size:2rem;
+  background:linear-gradient(45deg,#ff9a9e,#fad0c4);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:float 2s ease-in-out infinite alternate;
+  margin:0;
+}
+
+.subtitle{
+  font-size:1rem;
+  color:#fff;
+  margin-top:6px;
+}
+
+@keyframes float{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-6px)}
+}
+
+.sns-links a{
+  display:block;
+  margin:10px auto;
+  width:80%;
+  max-width:300px;
+  padding:12px;
+  background:#fff;
+  border-radius:30px;
+  text-decoration:none;
+  color:#333;
+  box-shadow:0 4px 6px rgba(0,0,0,.15);
+}
+
+.card{
+  margin:15px auto;
+  padding:15px;
+  width:90%;
+  max-width:500px;
+  background:rgba(173,216,230,.5);
+  border-radius:18px;
+  box-shadow:0 6px 12px rgba(0,0,0,.15);
+}
+
+.main-button{
+  font-family:'Hachi Maru Pop',sans-serif;
+  padding:10px 26px;
+  border:none;
+  border-radius:30px;
+  background:#e91e63;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+  transition:.2s;
+  white-space:nowrap;
+}
+
+.main-button:hover{
+  background:#c2185b;
+  transform:scale(1.05);
+}
+
+.main-button:active{transform:scale(.95)}
+
+#omikuji-result{
+  margin-top:10px;
+  font-weight:bold;
+  font-size:16px;
+}
+
+details{
+  border-radius:18px;
+  margin-top:10px;
+  overflow:hidden;
+}
+
+summary{
+  list-style:none;
+  cursor:pointer;
+  padding:14px 16px;
+  font-weight:700;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,.2);
+  border-radius:16px;
+}
+
+summary::after{
+  content:"＋";
+  font-size:20px;
+}
+
+details[open] summary::after{content:"－"}
+
+.invite-list,#comment-list{padding-top:10px}
+
+/* 招待コードボックス */
+.invite-box{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:rgba(220,240,255,.8);
+  border-radius:12px;
+  padding:10px 12px;
+  margin:6px 0;
+  box-shadow:0 3px 6px rgba(0,0,0,.1);
+  text-align:left;
+}
+
+.invite-info{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.service-name{
+  font-size:14px;
+  color:#666;
+}
+
+.invite-code{
+  font-size:15px;
+  color:#9c27b0;
+  word-break:break-all;
+}
+
+.copy-message{
+  font-size:12px;
+  color:#4caf50;
+  height:1em;
+  opacity:0;
+  transform:translateY(-4px);
+  transition:.2s;
+}
+
+.copy-message.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* コメント */
+.comment-form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.comment-input,.comment-textarea{
+  font-family:'Hachi Maru Pop',sans-serif;
+  padding:10px;
+  border-radius:15px;
+  border:2px solid #ce93d8;
+  font-size:14px;
+}
+
+.comment-item{
+  background:rgba(220,240,255,.8);
+  border-radius:12px;
+  padding:10px 12px;
+  margin:6px 0;
+  box-shadow:0 3px 6px rgba(0,0,0,.1);
+  text-align:left;
+}
+
+.comment-name{
+  font-size:14px;
+  color:#9c27b0;
+  font-weight:600;
+  margin-bottom:4px;
+}
+
+.comment-text{
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1 class="welcome">ようこそ♪</h1>
+  <p class="subtitle">🔗リンクまとめ(⁠✯⁠ᴗ⁠✯⁠)</p>
+</header>
+
+<div class="sns-links">
+  <a href="https://x.com/" onclick="openTwitter()" class="sns-btn twitter">Twitter</a>
+  <a href="https://misskey.flowers/@kgm" target="_blank">Misskey</a>
+</div>
+
+<section class="card">
+  <h2>おみくじ</h2>
+  <button class="main-button" id="omikuji-button">おみくじを引く</button>
+  <p id="omikuji-result"></p>
+</section>
+
+<details class="card">
+  <summary>ポイ活 招待コード</summary>
+  <div class="invite-list">
+
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">トリマ</div>
+        <div class="invite-code">p4CFE_hWf</div>
+        <div class="copy-message"></div>
+      </div>
+      <button class="main-button" onclick="copyText(this)">コピー</button>
+    </div>
+
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">レシチャレ</div>
+        <div class="invite-code">_RUWLY9L</div>
+        <div class="copy-message"></div>
+      </div>
+      <button class="main-button" onclick="copyText(this)">コピー</button>
+    </div>
+
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">マクロミル</div>
+        <div class="invite-code">URTG2104</div>
+        <div class="copy-message"></div>
+      </div>
+      <button class="main-button" onclick="copyText(this)">コピー</button>
+    </div>
+
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">Olive</div>
+        <div class="invite-code">FF33478-1107910</div>
+        <div class="copy-message"></div>
+      </div>
+      <button class="main-button" onclick="copyText(this)">コピー</button>
+    </div>
+
+    <div class="invite-box">
+      <div class="invite-info">
+        <div class="service-name">dジョブ</div>
+        <div class="invite-code">https://sw.djob.docomo.ne.jp/lp/friend_2211_receive?refer_friendcode=REpTMDAzMjM2MTg1NA==</div>
+      </div>
+      <a href="https://sw.djob.docomo.ne.jp/lp/friend_2211_receive?refer_friendcode=REpTMDAzMjM2MTg1NA==" target="_blank" class="main-button" style="text-decoration:none;">開く</a>
+    </div>
+
+  </div>
+</details>
+
+<details class="card">
+  <summary>みんなのコメント</summary>
+
+  <form class="comment-form"
+    action="https://docs.google.com/forms/d/e/1FAIpQLSeqN2Bcu62Iec3QcdqpV9ooE0TOhKHcXrsB_H4UoyUtQvDcsQ/formResponse"
+    method="POST"
+    target="hidden_iframe"
+    onsubmit="submitted=true;">
+    <input type="text" name="entry.243187617" placeholder="名前（任意）" class="comment-input">
+    <textarea name="entry.4743221" placeholder="コメント" required class="comment-textarea"></textarea>
+    <button type="submit" class="main-button">送信</button>
+  </form>
+
+  <iframe name="hidden_iframe" style="display:none"
+    onload="if(submitted){alert('送信しました！')}"></iframe>
+
+  <div id="comment-list"></div>
+</details>
+
+<footer>
+  <p>© 2024 SNSまとめ＆おみくじサイト</p>
+</footer>
+
+<script>
+/* ===== おみくじ ===== */
+const results = [
+  { t:"大大吉", m:"あなたは神です！", c:"#ffd700", w:0.001 },
+  { t:"大吉",   m:"最高の運勢！",     c:"#4caf50", w:0.15 },
+  { t:"中吉",   m:"いい一日になりそう", c:"#2196f3", w:0.3 },
+  { t:"吉",     m:"がんばれば実る",   c:"#ffeb3b", w:0.4 },
+  { t:"凶",     m:"慎重に行こう",     c:"#f44336", w:0.1 }
+];
+
+document.getElementById("omikuji-button").onclick = () => {
+  let r = Math.random(), s = 0;
+  for (let o of results) {
+    s += o.w;
+    if (r <= s) {
+      const el = document.getElementById("omikuji-result");
+      el.textContent = o.t + " - " + o.m;
+      el.style.color = o.c;
+      break;
+    }
+  }
+};
+
+/* ===== 招待コードコピー ===== */
+function copyText(btn) {
+  const box = btn.parentElement;
+  const text = box.querySelector(".invite-code").textContent;
+  const msg = box.querySelector(".copy-message");
+  navigator.clipboard.writeText(text).then(() => {
+    msg.textContent = "コピーしました！";
+    setTimeout(() => msg.textContent = "", 2000);
+  });
+}
+
+/* ===== コメント欄（24時間で消える／一部は残す） ===== */
+const LIMIT_HOURS = 24;
+
+fetch("https://docs.google.com/spreadsheets/d/10ZAAj6s5S3XXE4oGGnhRnWG_LT5rzgRrhwGdD7iEQv4/gviz/tq?tqx=out:csv")
+.then(r => r.text())
+.then(t => {
+  const now = Date.now();
+  const limit = LIMIT_HOURS * 60 * 60 * 1000;
+
+  t.trim().split("\n").slice(1).reverse().forEach(row => {
+    const c = row.split(",");
+
+    // A列：投稿時間
+    const timeStr = (c[0] || "").replace(/"/g,"").trim();
+    const postTime = new Date(timeStr).getTime();
+
+    // B列：名前 / C列：コメント
+    const name = (c[1] || "").replace(/"/g,"").trim() || "匿名";
+    const text = (c[2] || "").replace(/"/g,"").trim();
+    if (!text) return;
+
+    // ★ 残す条件
+    const keep =
+      text.includes("吉") ||   // コメントに大吉
+      name.includes("吉") ||   // 名前に大吉
+      name === "♪";              // 管理人
+
+    // 24時間超え＆特別条件なし → 非表示
+    if (now - postTime > limit && !keep) return;
+
+    document.getElementById("comment-list").innerHTML += `
+      <div class="comment-item">
+        <div class="comment-name">${name}</div>
+        <div class="comment-text">${text}</div>
+      </div>`;
+  });
+});
+
+/* ===== Twitter パスワード ===== */
+function openTwitter(){
+  const PASSWORD = (1000 + 100 + 10 + 5).toString(); // 1115
+  const input = prompt("パスワードを入力してください");
+
+  if(input === PASSWORD){
+    window.open("https://twitter.com/oo", "_blank");
+  }else if(input !== null){
+    alert("パスワードが違います");
+  }
+}
+</script>
+</html>
